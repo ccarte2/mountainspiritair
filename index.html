@@ -152,10 +152,8 @@
           </ul>
 
           <!-- Working Google Apps Script Email Form -->
-          <form class="form" id="interestForm" method="POST" action="https://script.google.com/macros/s/AKfycbz8ZskGVlj-VhToX9N9GZmSMZHtvR3eEZSSMccRvB5f_Z4aQxNdbpvUDlPq-btvEAaN/exec" novalidate>
-            <label class="visually-hidden" for="email">Email address</label>
-            <input id="email" type="email" name="email" inputmode="email" autocomplete="email"
-                   placeholder="Enter your email for an invitation…" required />
+         <form class="form" id="interestForm" method="POST" action="https://formspree.io/f/movpqjvk" novalidate>
+
             <!-- Honeypot -->
             <input type="text" name="_company" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off" />
             <button type="submit" id="submitBtn">Request Invite</button>
@@ -177,45 +175,45 @@
     </footer>
   </div>
 
-  <script>
-    // Year auto-fill
-    document.getElementById('year').textContent = new Date().getFullYear();
+<script>
+  const form = document.getElementById('interestForm');
+  const note = document.getElementById('formNote');
+  const btn  = document.getElementById('submitBtn');
 
-    const form = document.getElementById('interestForm');
-    const note = document.getElementById('formNote');
-    const btn  = document.getElementById('submitBtn');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    const trap  = form._company.value.trim(); // honeypot check
+    if (!email || trap) return;
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = form.email.value.trim();
-      const trap  = form._company.value.trim();
-      if (!email || trap) return;
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
 
-      btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
 
-      try {
-        // Send as form-urlencoded to avoid CORS issues
-        const body = new URLSearchParams({ email });
-        const resp = await fetch(form.action, { method: 'POST', body });
-
-        if (resp.ok) {
-          try {
-            const data = await resp.json();
-            if (!data.ok) throw new Error(data.error || 'Error');
-          } catch(_) { /* ignore JSON parse */ }
-          note.textContent = '✈️ Got it! Your MountainSpirit invite request was received.';
-          form.email.value = '';
-          btn.textContent = 'Requested ✓';
-        } else {
-          throw new Error('Non-200 response');
-        }
-      } catch (err) {
-        note.textContent = 'We could not submit right now. Please email join@mountainspiritair.com.';
-        btn.textContent = 'Try Again';
-      } finally {
-        setTimeout(()=>{ btn.disabled=false; btn.textContent='Request Invite'; }, 3000);
+      if (resp.ok) {
+        note.textContent = '✈️ Got it! Your MountainSpirit invite request was received.';
+        form.email.value = '';
+        btn.textContent = 'Requested ✓';
+      } else {
+        throw new Error('Non-200 response');
       }
-    });
-  </script>
+    } catch (err) {
+      note.textContent = 'We could not submit right now. Please email join@mountainspiritair.com.';
+      btn.textContent = 'Try Again';
+    } finally {
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Request Invite';
+      }, 3000);
+    }
+  });
+</script>
+
 </body>
 </html>
