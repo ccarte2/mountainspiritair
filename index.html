@@ -41,21 +41,26 @@
       background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
       box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
       overflow:hidden;
-      isolation:isolate;
+      isolation:isolate; /* create a new stacking context */
     }
+    /* CONTENT LAYER (above the plane) */
+    .hero-content{position:relative; z-index:2}
+
+    /* Decorative plane stays behind and ignores clicks */
+    .plane{
+      position:absolute; inset:auto -12vw -8vw auto;
+      width:min(680px,65vw); height:auto; opacity:.18;
+      z-index:1; pointer-events:none; /* <-- key fix */
+    }
+    .plane svg{width:100%;height:auto;stroke:var(--titanium);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
     .hero::before{
-      content:"";position:absolute;inset:-2px;opacity:.06;
+      content:"";position:absolute;inset:-2px;opacity:.06;z-index:0;
       background-image:
         repeating-linear-gradient(135deg,#ffffff 0 2px,transparent 2px 10px),
         repeating-linear-gradient(45deg,#ffffff 0 2px,transparent 2px 10px);
-      mix-blend-mode:overlay;
+      mix-blend-mode:overlay; pointer-events:none;
     }
-
-    .plane{
-      position:absolute;inset:auto -12vw -8vw auto;
-      width:min(680px,65vw);height:auto;opacity:.18;
-    }
-    .plane svg{width:100%;height:auto;stroke:var(--titanium);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 
     .eyebrow{color:var(--titanium);text-transform:uppercase;letter-spacing:.16em;font-weight:600;font-size:.78rem;margin-bottom:10px}
     h1{margin:0 0 12px;font-weight:800;line-height:1.08;font-size:clamp(28px,4.2vw,56px)}
@@ -78,6 +83,7 @@
       background:rgba(255,255,255,.08);color:var(--snow);
       padding:14px 16px;border-radius:10px;font-size:1rem;width:100%;
     }
+    .form input[type="email"]::placeholder{color:#e7f1ed;opacity:.9}
     .form button{
       appearance:none;border:none;cursor:pointer;
       background:var(--titanium);color:var(--ink);
@@ -85,11 +91,21 @@
       box-shadow:0 6px 20px rgba(0,0,0,.25);
     }
     .form button:hover{transform:translateY(-1px)}
-    .fine{color:#d1dad6;opacity:.8;font-size:.85rem;margin-top:10px}
+    .fine{color:#d1dad6;opacity:.85;font-size:.9rem;margin-top:10px}
     .brand{display:flex;gap:12px;align-items:center;color:var(--titanium);font-weight:700;letter-spacing:.12em;text-transform:uppercase}
     .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--titanium)}
     footer{color:#cdd5d2;opacity:.8;font-size:.9rem}
-    @media(max-width:700px){.form{grid-template-columns:1fr}.plane{inset:auto -30vw -14vw auto;width:88vw}}
+
+    @media(max-width:700px){
+      .form{grid-template-columns:1fr}
+      .plane{inset:auto -30vw -14vw auto;width:88vw}
+    }
+
+    .visually-hidden{
+      position:absolute !important;
+      height:1px;width:1px;overflow:hidden;
+      clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px;
+    }
   </style>
 </head>
 
@@ -103,8 +119,9 @@
 
     <main>
       <div class="container hero">
+        <!-- Decorative plane (behind content, cannot capture clicks) -->
         <div class="plane" aria-hidden="true">
-          <svg viewBox="0 0 600 240">
+          <svg viewBox="0 0 600 240" role="img" aria-label="Cessna SkyCourier outline">
             <path d="M300 20 L305 40 L305 200 L300 220 L295 200 L295 40 Z" />
             <path d="M295 40 L260 60 M305 40 L340 60" />
             <path d="M300 20 L285 35 M300 20 L315 35" />
@@ -117,33 +134,37 @@
           </svg>
         </div>
 
-        <div class="eyebrow">Private Mountain Flying • One Class • Flights at Cost</div>
-        <h1>Alpine access, without airline chaos.</h1>
-        <p class="lead">
-          A private, one-class club flying a 14-seat Cessna SkyCourier with two professional pilots.
-          Transparent costs. Simple access. Telluride ⇄ Aspen/Vail/Denver and more.
-        </p>
+        <!-- Everything interactive stays above the plane -->
+        <div class="hero-content">
+          <div class="eyebrow">Private Mountain Flying • One Class • Flights at Cost</div>
+          <h1>Alpine access, without airline chaos.</h1>
+          <p class="lead">
+            A private, one-class club flying a 14-seat Cessna SkyCourier with two professional pilots.
+            Transparent costs. Simple access. Telluride ⇄ Aspen/Vail/Denver and more.
+          </p>
 
-        <ul class="bullets">
-          <li class="chip">Flights billed at cost (~$86/seat/hour)</li>
-          <li class="chip">Equal rules & booking windows</li>
-          <li class="chip">Two pilots every flight</li>
-          <li class="chip">Dog-friendly cabin</li>
-          <li class="chip">Short alpine hops • No TSA lines</li>
-        </ul>
+          <ul class="bullets">
+            <li class="chip">Flights billed at cost (~$86/seat/hour)</li>
+            <li class="chip">Equal rules & booking windows</li>
+            <li class="chip">Two pilots every flight</li>
+            <li class="chip">Dog-friendly cabin</li>
+            <li class="chip">Short alpine hops • No TSA lines</li>
+          </ul>
 
-        <!-- ✅ Working Google Apps Script Email Form -->
-        <form class="form" id="interestForm" method="POST" action="https://script.google.com/macros/s/AKfycbz8ZskGVlj-VhToX9N9GZmSMZHtvR3eEZSSMccRvB5f_Z4aQxNdbpvUDlPq-btvEAaN/exec">
-          <label class="visually-hidden" for="email">Email address</label>
-          <input id="email" type="email" name="email" inputmode="email" autocomplete="email" placeholder="Enter your email for an invitation…" required />
-          <!-- Honeypot -->
-          <input type="text" name="_company" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off" />
-          <button type="submit" id="submitBtn">Request Invite</button>
-          <div class="fine" id="formNote">We’ll email you when founding memberships open. No spam.</div>
-        </form>
+          <!-- Working Google Apps Script Email Form -->
+          <form class="form" id="interestForm" method="POST" action="https://script.google.com/macros/s/AKfycbz8ZskGVlj-VhToX9N9GZmSMZHtvR3eEZSSMccRvB5f_Z4aQxNdbpvUDlPq-btvEAaN/exec" novalidate>
+            <label class="visually-hidden" for="email">Email address</label>
+            <input id="email" type="email" name="email" inputmode="email" autocomplete="email"
+                   placeholder="Enter your email for an invitation…" required />
+            <!-- Honeypot -->
+            <input type="text" name="_company" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off" />
+            <button type="submit" id="submitBtn">Request Invite</button>
+            <div class="fine" id="formNote">We’ll email you when founding memberships open. No spam.</div>
+          </form>
 
-        <div class="fine" style="margin-top:10px">
-          Prefer email? Write <a href="mailto:join@mountainspiritair.com">join@mountainspiritair.com</a>
+          <div class="fine" style="margin-top:10px">
+            Prefer email? Write <a href="mailto:join@mountainspiritair.com">join@mountainspiritair.com</a>
+          </div>
         </div>
       </div>
     </main>
@@ -196,13 +217,5 @@
       }
     });
   </script>
-
-  <style>
-    .visually-hidden{
-      position:absolute !important;
-      height:1px;width:1px;overflow:hidden;
-      clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px;
-    }
-  </style>
 </body>
 </html>
