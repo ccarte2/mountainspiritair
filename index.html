@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MountainSpirit Aviation — Private Mountain Flying Club</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="One-class private mountain flying club. Flights at cost. Two pilots every flight. Request an invitation." />
+  <!-- Open Graph -->
+  <meta property="og:title" content="MountainSpirit Aviation — Private Mountain Flying Club" />
+  <meta property="og:description" content="One-class private mountain flying club. Flights at cost. Two pilots every flight. Request an invitation." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mountainspiritair.com/" />
+  <meta property="og:image" content="https://mountainspiritair.com/og-image.jpg" />
+  <style>
+    :root{
+      --alpine:#0f3d2e;   /* deep alpine green */
+      --alpine-2:#0b2e23; /* darker variant */
+      --titanium:#b7b9bc; /* soft titanium */
+      --snow:#f8f9fa;
+      --ink:#0e1211;
+      --accent:#dfe3e6;
+    }
+    /* Reset & base */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--snow);
+      background: radial-gradient(1200px 600px at 70% 10%, #124d3a 0%, var(--alpine) 55%, var(--alpine-2) 100%);
+      font: 16px/1.45 ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      letter-spacing:.1px;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* Layout */
+    .wrap{
+      min-height:100dvh;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+    }
+    header,footer{padding:20px 24px}
+    main{display:grid;place-items:center;padding:24px}
+    .container{width:min(1100px, 92vw); margin:0 auto}
+
+    /* Hero card */
+    .hero{
+      position:relative;
+      border-radius:18px;
+      padding:clamp(28px, 4vw, 48px);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+      overflow:hidden;
+      isolation:isolate;
+    }
+
+    /* Subtle topo texture */
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      opacity:.06; pointer-events:none;
+      background-image:
+        repeating-linear-gradient(135deg, #ffffff 0 2px, transparent 2px 10px),
+        repeating-linear-gradient(45deg, #ffffff 0 2px, transparent 2px 10px);
+      mix-blend-mode:overlay;
+    }
+
+    /* Titanium SkyCourier outline "punch-out" */
+    .plane{
+      position:absolute; inset:auto -12vw -8vw auto;
+      width:min(680px, 65vw); height:auto; opacity:.18;
+      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+    .plane svg{display:block; width:100%; height:auto; stroke:var(--titanium); fill:transparent; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
+
+    /* Copy */
+    .eyebrow{color:var(--titanium); text-transform:uppercase; letter-spacing:.16em; font-weight:600; font-size:.78rem; margin-bottom:10px}
+    h1{margin:0 0 12px; font-weight:800; line-height:1.08; font-size:clamp(28px, 4.2vw, 56px)}
+    .lead{color:#e7f1ed; max-width:60ch; font-size:clamp(16px, 2.1vw, 19px); margin:0 0 22px}
+    .bullets{
+      display:flex; flex-wrap:wrap; gap:10px 16px; margin:0 0 26px; padding:0; list-style:none
+    }
+    .chip{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15);
+      color:#dfeee8; padding:8px 12px; border-radius:999px; font-size:.92rem; backdrop-filter: blur(4px);
+    }
+
+    /* Form */
+    .form{
+      display:grid; grid-template-columns: 1fr auto; gap:10px;
+      width:min(640px, 100%); align-items:center;
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.14);
+      padding:10px; border-radius:14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .form input[type="email"]{
+      appearance:none; border:none; outline:none;
+      background:rgba(255,255,255,.08);
+      color:var(--snow);
+      padding:14px 16px; border-radius:10px;
+      font-size:1rem;
+      width:100%;
+    }
+    .form button{
+      appearance:none; border:none; cursor:pointer;
+      background:var(--titanium); color:var(--ink);
+      padding:14px 18px; border-radius:10px; font-weight:700; font-size:1rem;
+      box-shadow:0 6px 20px rgba(0,0,0,.25);
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .form button:hover{transform: translateY(-1px); box-shadow:0 10px 28px rgba(0,0,0,.35)}
+    .form button:active{transform: translateY(0)}
+
+    .fine{color:#d1dad6; opacity:.8; font-size:.85rem; margin-top:10px}
+    .brand{display:flex; gap:12px; align-items:center; color:var(--titanium); font-weight:700; letter-spacing:.12em; text-transform:uppercase}
+    .brand .dot{width:10px; height:10px; border-radius:50%; background:var(--titanium)}
+    footer{color:#cdd5d2; opacity:.8; font-size:.9rem}
+
+    /* Responsive tweak */
+    @media (max-width:700px){
+      .form{grid-template-columns:1fr}
+      .plane{inset:auto -30vw -14vw auto; width:88vw}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="container brand">
+        <span class="dot"></span>
+        <span>MountainSpirit Aviation</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="container hero">
+        <!-- Plane outline (stylized SkyCourier twin turboprop top view) -->
+        <div class="plane" aria-hidden="true">
+          <svg viewBox="0 0 600 240" role="img">
+            <!-- Fuselage -->
+            <path d="M300 20 L305 40 L305 200 L300 220 L295 200 L295 40 Z" />
+            <!-- Tail -->
+            <path d="M295 40 L260 60 M305 40 L340 60" />
+            <path d="M300 20 L285 35 M300 20 L315 35" />
+            <!-- Wings -->
+            <path d="M140 110 L460 110" />
+            <path d="M160 106 L440 106 M160 114 L440 114" />
+            <!-- Nacelles / gear fairings -->
+            <circle cx="200" cy="110" r="10" />
+            <circle cx="400" cy="110" r="10" />
+            <!-- Props (outline) -->
+            <path d="M200 90 L200 130 M185 110 L215 110" />
+            <path d="M400 90 L400 130 M385 110 L415 110" />
+          </svg>
+        </div>
+
+        <div class="eyebrow">Private Mountain Flying • One Class • Flights at Cost</div>
+        <h1>Alpine access, without airline chaos.</h1>
+        <p class="lead">
+          A private, one-class club flying a 14-seat Cessna SkyCourier with two professional pilots.
+          Transparent costs. Simple access. Telluride ⇄ Aspen/Vail/Denver and more.
+        </p>
+
+        <ul class="bullets">
+          <li class="chip">Flights billed at cost (~$86/seat/hour)</li>
+          <li class="chip">Equal rules & booking windows</li>
+          <li class="chip">Two pilots every flight</li>
+          <li class="chip">Dog-friendly cabin</li>
+          <li class="chip">Short alpine hops • No TSA lines</li>
+        </ul>
+
+        <!-- Interest form -->
+        <form class="form" id="interestForm" method="POST" action="https://formspree.io/f/your-id">
+          <!-- Replace action with your endpoint (Formspree, Netlify Forms, or /api/interest) -->
+          <label class="visually-hidden" for="email">Email address</label>
+          <input id="email" type="email" name="email" inputmode="email" autocomplete="email"
+                 placeholder="Enter your email for an invitation…" required />
+          <!-- Honeypot -->
+          <input type="text" name="_company" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off" />
+          <button type="submit" id="submitBtn">Request Invite</button>
+          <div class="fine" id="formNote">
+            We’ll email you when founding memberships open. No spam. Unsubscribe anytime.
+          </div>
+        </form>
+
+        <div class="fine" style="margin-top:10px">
+          Prefer email? Write <a href="mailto:join@mountainspiritair.com">join@mountainspiritair.com</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container" style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div>© <span id="year"></span> MountainSpirit Aviation. All rights reserved.</div>
+        <div><a href="https://cessna.txtav.com/en/turboprop/skycourier-passenger#overview" target="_blank" rel="noopener">Cessna SkyCourier (passenger)</a></div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple client-side submit with graceful fallback
+    const form = document.getElementById('interestForm');
+    const note = document.getElementById('formNote');
+    const btn  = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      const trap  = form._company.value.trim();
+      if (!email || trap) return;
+
+      btn.disabled = true; btn.textContent = 'Sending…';
+
+      // TRY: POST to the form action endpoint
+      try {
+        const resp = await fetch(form.action, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+          body: JSON.stringify({ email })
+        });
+
+        if (resp.ok) {
+          note.textContent = 'Thanks! You’re on the list. We’ll reach out with next steps.';
+          form.email.value = '';
+          btn.textContent = 'Requested ✓';
+        } else {
+          // Fallback: open mailto to capture interest
+          window.location.href = `mailto:join@mountainspiritair.com?subject=Membership Interest&body=Email:%20${encodeURIComponent(email)}`;
+          btn.textContent = 'Open Mail…';
+        }
+      } catch(err){
+        // Last resort fallback
+        window.location.href = `mailto:join@mountainspiritair.com?subject=Membership Interest&body=Email:%20${encodeURIComponent(email)}`;
+        btn.textContent = 'Open Mail…';
+      } finally {
+        setTimeout(()=>{ btn.disabled=false; btn.textContent='Request Invite'; }, 3500);
+      }
+    });
+  </script>
+
+  <!-- Optional: tiny helper for screen readers -->
+  <style>
+    .visually-hidden{
+      position:absolute !important;
+      height:1px;width:1px; overflow:hidden;
+      clip:rect(1px,1px,1px,1px); white-space:nowrap; border:0; padding:0; margin:-1px;
+    }
+  </style>
+</body>
+</html>
