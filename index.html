@@ -19,6 +19,65 @@
   --snow:#F8F9FA;
   --ink:#0E1211;
 }
+
+    /* iOS safe area + type size */
+:root{
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+html{ -webkit-text-size-adjust: 100%; }
+
+/* Use safe area in header/footer so content doesn't sit under the notch or home indicator */
+header{ padding-top: calc(20px + var(--safe-top)); }
+footer{ padding-bottom: calc(20px + var(--safe-bottom)); }
+
+/* Tame the background glassiness on iOS (prevents banding/over-bright top area) */
+.hero::before{ opacity:.04; }
+
+/* Make sure the main hero doesn’t hug screen edges on narrow phones */
+@media (max-width: 430px){
+  main{ padding: 16px; }
+  .container.hero{ border-radius:14px; padding:22px; }
+}
+
+/* Chips/bullets scale down on mobile so they don't stack awkwardly */
+@media (max-width: 430px){
+  .bullets{ gap:8px 10px; }
+  .chip{
+    padding:6px 10px;
+    font-size:.9rem;
+    border-radius:18px;
+    backdrop-filter:none;                /* iOS Safari artifact fix */
+    -webkit-backdrop-filter:none;
+  }
+}
+
+/* Form: stack button below the input; make the button full width; increase contrast of input */
+@media (max-width: 700px){
+  .form{ grid-template-columns:1fr; gap:8px; }
+  .form button{ width:100%; }
+}
+.form input[type="email"]{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+/* Prevent footer link from looking like a pill on iOS (inherits no chip styles) */
+footer a{
+  display:inline;
+  background:transparent !important;
+  border:none !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+}
+
+/* Tighten footer on very narrow devices so text doesn’t overlap the link */
+@media (max-width: 430px){
+  footer .container{ gap:10px; flex-direction:column; align-items:flex-start; }
+}
+
+    
     *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%}
     body{
