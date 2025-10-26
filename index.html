@@ -150,25 +150,31 @@
             <li class="chip">Dog-friendly cabin</li>
             <li class="chip">Short alpine hops • No TSA lines</li>
           </ul>
-
-   <form class="form" id="interestForm" method="POST" action="https://formspree.io/f/movpqjvk" novalidate>
+</form>
+<form class="form" id="interestForm" method="POST" action="https://formspree.io/f/movpqjvk" novalidate>
   <label class="visually-hidden" for="email">Email address</label>
   <input
     id="email"
     type="email"
-    name="email"         <!-- REQUIRED by Formspree -->
+    name="email"
     inputmode="email"
     autocomplete="email"
     placeholder="Enter your email for an invitation…"
     required
   />
   <!-- Honeypot -->
-  <input type="text" name="_company" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off" />
-  <!-- Optional metadata that will appear in Formspree email -->
+  <input
+    type="text"
+    name="_company"
+    style="position:absolute;left:-9999px;opacity:0"
+    tabindex="-1"
+    autocomplete="off"
+  />
   <input type="hidden" name="_subject" value="MountainSpirit: New interest submission" />
   <button type="submit" id="submitBtn">Request Invite</button>
   <div class="fine" id="formNote">We’ll email you when founding memberships open. No spam.</div>
 </form>
+
 
 
           <div class="fine" style="margin-top:10px">
