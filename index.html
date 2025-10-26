@@ -151,14 +151,25 @@
             <li class="chip">Short alpine hops • No TSA lines</li>
           </ul>
 
-          <!-- Working Google Apps Script Email Form -->
-         <form class="form" id="interestForm" method="POST" action="https://formspree.io/f/movpqjvk" novalidate>
+   <form class="form" id="interestForm" method="POST" action="https://formspree.io/f/movpqjvk" novalidate>
+  <label class="visually-hidden" for="email">Email address</label>
+  <input
+    id="email"
+    type="email"
+    name="email"         <!-- REQUIRED by Formspree -->
+    inputmode="email"
+    autocomplete="email"
+    placeholder="Enter your email for an invitation…"
+    required
+  />
+  <!-- Honeypot -->
+  <input type="text" name="_company" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off" />
+  <!-- Optional metadata that will appear in Formspree email -->
+  <input type="hidden" name="_subject" value="MountainSpirit: New interest submission" />
+  <button type="submit" id="submitBtn">Request Invite</button>
+  <div class="fine" id="formNote">We’ll email you when founding memberships open. No spam.</div>
+</form>
 
-            <!-- Honeypot -->
-            <input type="text" name="_company" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off" />
-            <button type="submit" id="submitBtn">Request Invite</button>
-            <div class="fine" id="formNote">We’ll email you when founding memberships open. No spam.</div>
-          </form>
 
           <div class="fine" style="margin-top:10px">
             Prefer email? Write <a href="mailto:join@mountainspiritair.com">join@mountainspiritair.com</a>
@@ -182,9 +193,21 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = form.email.value.trim();
-    const trap  = form._company.value.trim(); // honeypot check
-    if (!email || trap) return;
+
+    // Guard: make sure the email element exists and is valid
+    const emailInput = form.querySelector('input[name="email"]');
+    if (!emailInput) {
+      console.error('[MSA] Email input not found in form.');
+      note.textContent = 'Form error. Please email join@mountainspiritair.com.';
+      return;
+    }
+
+    const email = emailInput.value.trim();
+    const trap  = form._company.value.trim(); // honeypot
+    if (!email || trap) {
+      console.warn('[MSA] Missing email or honeypot tripped.');
+      return;
+    }
 
     btn.disabled = true;
     btn.textContent = 'Sending…';
@@ -198,12 +221,15 @@
 
       if (resp.ok) {
         note.textContent = '✈️ Got it! Your MountainSpirit invite request was received.';
-        form.email.value = '';
+        emailInput.value = '';
         btn.textContent = 'Requested ✓';
       } else {
-        throw new Error('Non-200 response');
+        console.error('[MSA] Non-200 response from Formspree:', resp.status);
+        note.textContent = 'We could not submit right now. Please email join@mountainspiritair.com.';
+        btn.textContent = 'Try Again';
       }
     } catch (err) {
+      console.error('[MSA] Submit failed:', err);
       note.textContent = 'We could not submit right now. Please email join@mountainspiritair.com.';
       btn.textContent = 'Try Again';
     } finally {
